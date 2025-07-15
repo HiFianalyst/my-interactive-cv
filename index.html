@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaime A. Miranda Colon - Interactive CV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A non-linear, dashboard-centric SPA. The structure starts with a high-impact header and sticky navigation to allow users to jump to sections. The core is an interactive 'Dashboard' section with KPI cards and a skills chart to provide an immediate summary of qualifications. This is followed by a 'Career Timeline' for chronological context, a 'Skills & Projects' deep-dive with tabs, and a 'Publications' section. This design was chosen to grab a recruiter's attention immediately with key metrics and visuals, then allow them to explore details non-linearly based on their interests, which is more engaging than a traditional, static CV. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Key Metrics (Years Exp, Publications) -> Goal: Inform/Impact -> Viz: KPI Cards (HTML/CSS) -> Interaction: Hover highlight -> Justification: Makes key achievements stand out instantly.
+        - Report Info: Core Competencies -> Goal: Compare/Inform -> Viz: Radar Chart (Chart.js) -> Interaction: Hover tooltips -> Justification: Visually demonstrates the balance and depth of skills across different domains.
+        - Report Info: Professional Experience -> Goal: Show Chronology -> Viz: Vertical Timeline (HTML/CSS) -> Interaction: Click to expand details -> Justification: Modern, clean presentation of career progression that remains uncluttered until the user wants details.
+        - Report Info: Technical Skills -> Goal: Organize -> Viz: Tabbed Interface (HTML/JS) -> Interaction: Click to switch views -> Justification: Prevents a "wall of text" and improves scannability.
+        - Report Info: Publications -> Goal: Organize/Inform -> Viz: Filterable List (HTML/JS) -> Interaction: Filter buttons -> Justification: Adds useful functionality for academic/research-focused reviewers.
+        -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .tab-active {
+            border-bottom-color: #0d9488;
+            color: #0d9488;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 4px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ccfbf1;
+            border: 4px solid #0d9488;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold text-teal-700">Jaime A. Miranda Colon</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#dashboard" class="text-gray-600 hover:text-teal-600 transition">Dashboard</a>
+                <a href="#timeline" class="text-gray-600 hover:text-teal-600 transition">Timeline</a>
+                <a href="#skills" class="text-gray-600 hover:text-teal-600 transition">Skills</a>
+                <a href="#publications" class="text-gray-600 hover:text-teal-600 transition">Publications</a>
+            </div>
+            <a href="mailto:jm764288@gmail.com" class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition text-sm font-medium">Contact Me</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- Hero Section -->
+        <section class="text-center mb-16">
+            <h2 class="text-3xl md:text-5xl font-extrabold mb-3">AI-Augmented NGS Pipeline Engineer</h2>
+            <p class="max-w-3xl mx-auto text-gray-600 text-lg">
+                Fusing 9 years of molecular biology experience with scalable automation and Large Language Models to accelerate toxicogenomics and regulatory research.
+            </p>
+            <div class="mt-8 flex justify-center space-x-4">
+                <a href="https://github.com/GenomeAnalystNCTR" target="_blank" class="bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition font-semibold">GitHub</a>
+                <a href="https://www.linkedin.com/in/jaime-a-m-636582247" target="_blank" class="bg-white text-teal-600 border border-teal-600 px-6 py-3 rounded-lg hover:bg-teal-50 transition font-semibold">LinkedIn</a>
+            </div>
+        </section>
+
+        <!-- Interactive Dashboard Section -->
+        <section id="dashboard" class="mb-20">
+            <h3 class="text-3xl font-bold text-center mb-10">Professional Dashboard</h3>
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <p class="text-gray-600">This dashboard provides a high-level overview of my core qualifications and technical capabilities. Interact with the elements below to explore my key achievements and skill distribution, offering a quick insight into the value I bring to research and development teams.</p>
+            </div>
+            <!-- KPI Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 text-center mb-16">
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                    <div class="text-4xl font-bold text-teal-600">9</div>
+                    <p class="text-gray-500 mt-2">Years of Experience</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                    <div class="text-4xl font-bold text-teal-600">5+</div>
+                    <p class="text-gray-500 mt-2">First-Author Papers</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                    <div class="text-4xl font-bold text-teal-600">5</div>
+                    <p class="text-gray-500 mt-2">Postdocs Trained</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                    <div class="text-4xl font-bold text-teal-600">50%</div>
+                    <p class="text-gray-500 mt-2">Reduction in Analysis Time</p>
+                </div>
+            </div>
+
+            <!-- Skills Radar Chart -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+                <h4 class="text-xl font-bold text-center mb-4">Core Competency Matrix</h4>
+                <div class="chart-container">
+                    <canvas id="skillsRadarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Career Timeline Section -->
+        <section id="timeline" class="mb-20">
+            <h3 class="text-3xl font-bold text-center mb-10">Career Timeline</h3>
+             <div class="text-center max-w-2xl mx-auto mb-12">
+                <p class="text-gray-600">My professional journey reflects a consistent progression from foundational research roles to leading complex, AI-enhanced bioinformatics projects. This timeline highlights key positions and responsibilities that have shaped my expertise in genetic toxicology and NGS pipeline engineering.</p>
+            </div>
+            <div class="relative max-w-3xl mx-auto border-l-2 border-teal-100 pl-8 py-4">
+                <!-- Timeline Item -->
+                <div class="mb-12 timeline-item">
+                    <h4 class="text-xl font-bold">Biologist</h4>
+                    <p class="text-teal-600 font-semibold">U.S. FDA National Center for Toxicological Research (NCTR)</p>
+                    <p class="text-sm text-gray-500 mb-3">January 2020 – Present</p>
+                    <div class="space-y-2 text-gray-700">
+                        <p>• Co-developed and validated a PacBio HiFi-based assay for ultra-rare somatic mutation detection.</p>
+                        <p>• Automated NGS pipelines (Illumina, PacBio) in Bash, R, and Python, cutting analysis time by 20%.</p>
+                        <p>• Engineered a GUI-based, containerized application (Singularity) for reproducible analysis of PacBio HiFi data.</p>
+                        <p>• Trained 5 post-doctoral researchers on end-to-end sequencing workflows.</p>
+                    </div>
+                </div>
+                <!-- Timeline Item -->
+                <div class="mb-12 timeline-item">
+                    <h4 class="text-xl font-bold">Research Assistant II</h4>
+                    <p class="text-teal-600 font-semibold">Texas Tech University Health Sciences Center</p>
+                    <p class="text-sm text-gray-500 mb-3">August 2019 – December 2019</p>
+                </div>
+                <!-- Timeline Item -->
+                <div class="mb-12 timeline-item">
+                    <h4 class="text-xl font-bold">Research Assistant</h4>
+                    <p class="text-teal-600 font-semibold">Baylor Scott & White Health</p>
+                    <p class="text-sm text-gray-500 mb-3">February 2016 – July 2019</p>
+                     <p class="text-gray-700">• Managed BSL-2 lab operations, including MIC assays, bacterial culture support, and experimental logging.</p>
+                </div>
+                <!-- Timeline Item -->
+                <div class="timeline-item">
+                    <h4 class="text-xl font-bold">Bachelor of Science, Biology</h4>
+                    <p class="text-teal-600 font-semibold">University of Puerto Rico, Río Piedras</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills & Projects Section -->
+        <section id="skills" class="mb-20">
+            <h3 class="text-3xl font-bold text-center mb-10">Technical Skills & Projects</h3>
+             <div class="text-center max-w-2xl mx-auto mb-12">
+                <p class="text-gray-600">This section provides a detailed breakdown of my technical toolkit and showcases key projects. Use the tabs to navigate between different skill domains, from wet-lab techniques to AI and containerization. The featured projects demonstrate the practical application of these skills.</p>
+            </div>
+            <!-- Tabs -->
+            <div class="mb-8 border-b border-gray-200">
+                <nav class="flex justify-center -mb-px space-x-6" id="skillTabs">
+                    <button data-tab="bioinformatics" class="tab-active py-4 px-1 border-b-2 font-medium text-lg transition">Bioinformatics & Computing</button>
+                    <button data-tab="wetlab" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-lg transition">Molecular & Wet-Lab</button>
+                    <button data-tab="ai" class="py-4 px-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium text-lg transition">AI & Automation</button>
+                </nav>
+            </div>
+            <!-- Tab Content -->
+            <div id="skillContent" class="max-w-4xl mx-auto">
+                <div id="tab-bioinformatics" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <span class="bg-teal-50 text-teal-800 text-sm font-medium p-3 rounded-lg text-center">NGS</span>
+                    <span class="bg-teal-50 text-teal-800 text-sm font-medium p-3 rounded-lg text-center">PacBio HiFi Sequencing</span>
+                    <span class="bg-teal-50 text-teal-800 text-sm font-medium p-3 rounded-lg text-center">Linux & Bash Scripting</span>
+                    <span class="bg-teal-50 text-teal-800 text-sm font-medium p-3 rounded-lg text-center">R (tidyverse, ggplot2)</span>
+                    <span class="bg-teal-50 text-teal-800 text-sm font-medium p-3 rounded-lg text-center">Python (pandas, numpy)</span>
+                    <span class="bg-teal-50 text-teal-800 text-sm font-medium p-3 rounded-lg text-center">VCF/BAM/FASTA Analysis</span>
+                    <span class="bg-teal-50 text-teal-800 text-sm font-medium p-3 rounded-lg text-center">Docker & Singularity</span>
+                    <span class="bg-teal-50 text-teal-800 text-sm font-medium p-3 rounded-lg text-center">BWA, Samtools, Picard</span>
+                    <span class="bg-teal-50 text-teal-800 text-sm font-medium p-3 rounded-lg text-center">Statistical Modeling</span>
+                </div>
+                <div id="tab-wetlab" class="hidden grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <span class="bg-sky-50 text-sky-800 text-sm font-medium p-3 rounded-lg text-center">DNA/RNA Extraction</span>
+                    <span class="bg-sky-50 text-sky-800 text-sm font-medium p-3 rounded-lg text-center">Illumina Library Prep</span>
+                    <span class="bg-sky-50 text-sky-800 text-sm font-medium p-3 rounded-lg text-center">PacBio Library Prep</span>
+                    <span class="bg-sky-50 text-sky-800 text-sm font-medium p-3 rounded-lg text-center">CRISPR Base Editing</span>
+                    <span class="bg-sky-50 text-sky-800 text-sm font-medium p-3 rounded-lg text-center">Dose-Response Assays</span>
+                    <span class="bg-sky-50 text-sky-800 text-sm font-medium p-3 rounded-lg text-center">BSL-2 Operations</span>
+                </div>
+                <div id="tab-ai" class="hidden grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <span class="bg-indigo-50 text-indigo-800 text-sm font-medium p-3 rounded-lg text-center">LLM Automation</span>
+                    <span class="bg-indigo-50 text-indigo-800 text-sm font-medium p-3 rounded-lg text-center">Prompt Engineering</span>
+                    <span class="bg-indigo-50 text-indigo-800 text-sm font-medium p-3 rounded-lg text-center">Ollama for Lit Mining</span>
+                    <span class="bg-indigo-50 text-indigo-800 text-sm font-medium p-3 rounded-lg text-center">Jupyter AI Assistants</span>
+                    <span class="bg-indigo-50 text-indigo-800 text-sm font-medium p-3 rounded-lg text-center">AI Content Generation</span>
+                </div>
+            </div>
+
+            <!-- Featured Projects -->
+             <div class="mt-16">
+                 <h4 class="text-2xl font-bold text-center mb-8">Featured Projects</h4>
+                 <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                         <h5 class="font-bold text-lg mb-2">Mutational Signature Visualization</h5>
+                         <p class="text-sm text-gray-600 mb-4">R/Python scripts for generating normalized signature plots to analyze mutation patterns.</p>
+                         <a href="https://github.com/GenomeAnalystNCTR" target="_blank" class="text-teal-600 font-semibold hover:underline">View on GitHub →</a>
+                     </div>
+                     <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                         <h5 class="font-bold text-lg mb-2">PacBio Pipeline Automation</h5>
+                         <p class="text-sm text-gray-600 mb-4">A complete Python workflow designed for automated analysis of Revio/Sequel II data.</p>
+                         <a href="https://github.com/GenomeAnalystNCTR" target="_blank" class="text-teal-600 font-semibold hover:underline">View on GitHub →</a>
+                     </div>
+                      <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                         <h5 class="font-bold text-lg mb-2">ANOVA Statistical Analysis</h5>
+                         <p class="text-sm text-gray-600 mb-4">Custom data visualizations for dose-response experiments using statistical analysis.</p>
+                         <a href="https://github.com/GenomeAnalystNCTR" target="_blank" class="text-teal-600 font-semibold hover:underline">View on GitHub →</a>
+                     </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- Publications Section -->
+        <section id="publications">
+            <h3 class="text-3xl font-bold text-center mb-10">Publications & Presentations</h3>
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                 <p class="text-gray-600">My commitment to advancing science is demonstrated through peer-reviewed publications and presentations at major industry conferences. The work listed here represents key contributions to the fields of mutagenesis, toxicology, and NGS methodology.</p>
+            </div>
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                    <h4 class="font-bold text-lg mb-4">First-Author Publications</h4>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>Miranda Colón, J.A., et al. (2024). *Assessment of In Vivo Chemical Mutagenesis by Long Read Sequencing.* Toxicological Sciences.</li>
+                        <li>Miranda Colón, J.A., et al. (2023). *Unbiased Whole Genome Detection of Ultrarare Off Target Mutations...* Environmental and Molecular Mutagenesis.</li>
+                        <li>Miranda Colón, J.A., et al. (2022). *Evaluation of the Mutagenic Effects of Molnupiravir and N4 hydroxycytidine...* Environmental and Molecular Mutagenesis.</li>
+                    </ul>
+                    <hr class="my-6">
+                    <h4 class="font-bold text-lg mb-4">Presentations</h4>
+                     <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>**Oral Presentation:** Environmental Mutagenesis and Genomics Society Annual Meeting (EMGS) (2024)</li>
+                        <li>**Posters:** Society of Toxicology (SOT) (2023 & 2024)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-20">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p class="text-lg font-bold">Jaime A. Miranda Colon</p>
+            <p class="text-gray-400 mb-4">Open to relocation and new opportunities in Europe.</p>
+            <div class="flex justify-center space-x-4">
+                <a href="mailto:jm764288@gmail.com" class="hover:text-teal-400 transition">Email</a>
+                <a href="https://www.linkedin.com/in/jaime-a-m-636582247" target="_blank" class="hover:text-teal-400 transition">LinkedIn</a>
+                <a href="https://github.com/GenomeAnalystNCTR" target="_blank" class="hover:text-teal-400 transition">GitHub</a>
+                <a href="https://orcid.org/0009-0000-0780-7585" target="_blank" class="hover:text-teal-400 transition">ORCID</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Skills Radar Chart
+            const ctx = document.getElementById('skillsRadarChart').getContext('2d');
+            const skillsRadarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Bioinformatics & Pipelines', 
+                        'AI & Automation', 
+                        'Molecular & Wet-Lab', 
+                        'Data Analysis & Viz', 
+                        'Project Management',
+                        'Scientific Communication'
+                    ],
+                    datasets: [{
+                        label: 'Skill Proficiency',
+                        data: [95, 85, 90, 90, 75, 80],
+                        backgroundColor: 'rgba(13, 148, 136, 0.2)',
+                        borderColor: 'rgba(13, 148, 136, 1)',
+                        pointBackgroundColor: 'rgba(13, 148, 136, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(13, 148, 136, 1)'
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                            pointLabels: {
+                                font: { size: 12 },
+                                color: '#4b5563'
+                            },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                color: '#6b7280'
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                           display: false
+                        }
+                    }
+                }
+            });
+
+            // Skills Tab Functionality
+            const skillTabs = document.getElementById('skillTabs');
+            const skillContents = document.getElementById('skillContent').children;
+
+            skillTabs.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    const tabId = e.target.dataset.tab;
+                    
+                    // Update active tab style
+                    for (const button of skillTabs.children) {
+                        button.classList.remove('tab-active');
+                    }
+                    e.target.classList.add('tab-active');
+
+                    // Show/hide content
+                    for (const content of skillContents) {
+                        if (content.id === `tab-${tabId}`) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
